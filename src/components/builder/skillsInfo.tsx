@@ -15,6 +15,7 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { skillsSchema } from "./schemas";
 import { Input } from "../ui/input";
+import { useNavigate } from "react-router-dom";
 
 type SkillsInfoProps = BaseFormComponentProps & {
   user: Pick<User, "skills">;
@@ -26,9 +27,11 @@ const SkillsInfo: React.FC<SkillsInfoProps> = ({
   onPrevious,
   onNext,
   user,
+  isEdit,
+  resumeId,
 }) => {
   const [skills, setSkills] = useState<Skill[]>(user.skills);
-
+  const navigate = useNavigate();
   const form = useForm<z.infer<typeof skillsSchema>>({
     resolver: zodResolver(skillsSchema),
     defaultValues: {
@@ -46,6 +49,10 @@ const SkillsInfo: React.FC<SkillsInfoProps> = ({
     handleSubmit({
       skills: skills,
     });
+
+    if (isEdit) {
+      navigate(`/preview/${resumeId}`);
+    }
     if (onNext) onNext();
   };
 
@@ -63,13 +70,13 @@ const SkillsInfo: React.FC<SkillsInfoProps> = ({
   };
   return (
     <div className="flex flex-col h-auto gap-y-8">
-      <div className="grid grid-cols-4 gap-y-4 gap-x-4">
+      <div className="flex flex-row flex-wrap gap-y-4 gap-x-4">
         {skills.map((value) => (
           <div
             key={value.id}
             className="px-4 py-2 flex flex-row gap-x-2   border bg-gray-100 border-gray-400  text-sm rounded-2xl  justify-center items-center"
           >
-            <p className="text-sm text-gray-700">{value.value}</p>
+            <p className="text-xs text-gray-700">{value.value}</p>
             <button
               className="px-0 py-0 bg-transparent border-none hover:border rounded-full "
               onClick={() => onDelete(value.id)}
@@ -100,18 +107,30 @@ const SkillsInfo: React.FC<SkillsInfoProps> = ({
           </Button>
         </form>
         <div className="flex w-full justify-between">
-          {hasPrevious && (
+          {isEdit ? (
             <Button
               className="px-6  bg-sky-600 hover:bg-sky-500 text-white"
-              type="button"
-              onClick={() => onPrevious && onPrevious()}
+              type="submit"
+              onClick={() => saveSkills()}
             >
-              Back
+              Save
             </Button>
+          ) : (
+            hasPrevious &&
+            !isEdit && (
+              <Button
+                className="px-6  bg-sky-600 hover:bg-sky-500 text-white"
+                type="button"
+                onClick={() => onPrevious && onPrevious()}
+              >
+                Back
+              </Button>
+            )
           )}
-          {hasNext && (
+          {hasNext && !isEdit && (
             <Button
               className="px-6 bg-sky-600 hover:bg-sky-500 text-white"
+              type="submit"
               onClick={() => saveSkills()}
             >
               Next

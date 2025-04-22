@@ -1,42 +1,50 @@
-import React, { ReactNode, useEffect, useState } from "react";
+import React, { forwardRef, ReactNode, useEffect, useState } from "react";
 
 type ResumePreviewPropsProps = {
   children: ReactNode;
+  maxWidth?: number;
 };
 
-const ResumeLayout: React.FC<ResumePreviewPropsProps> = ({ children }) => {
-  const [scale, setScale] = useState(1);
+const ResumeLayout = forwardRef<HTMLDivElement, ResumePreviewPropsProps>(
+  ({ maxWidth, children }, ref) => {
+    const [scale, setScale] = useState(1);
 
-  useEffect(() => {
-    function handleResize() {
-      const screenWidth = Math.min(window.innerWidth - 40, 500);
-      const maxWidth = 794;
-      const newScale = Math.min(1, screenWidth / maxWidth);
-      setScale(newScale);
-    }
+    useEffect(() => {
+      const maxPageWidth = 794;
+      function calculateScale(mw?: number) {
+        const screenWidth = mw || Math.min(window.innerWidth - 40, 600);
+        const newScale = Math.min(1, screenWidth / maxPageWidth);
+        setScale(newScale);
+      }
 
-    handleResize(); // set on mount
-    window.addEventListener("resize", handleResize);
+      const handleResize = () => calculateScale(maxWidth);
 
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
+      handleResize(); // set on mount
+      window.addEventListener("resize", handleResize);
 
-  return (
-    <div className="w-full h-full flex justify-center items-start overflow-hidden p-0 m-0 max-h-[500px] sm:max-h-[750px]">
+      return () => window.removeEventListener("resize", handleResize);
+    }, [maxWidth]);
+
+    return (
       <div
-        style={{
-          transform: `scale(${scale})`,
-          transformOrigin: "top",
-          width: `${794}px`,
-          height: `${1123}px`,
-        }}
+        ref={ref}
+        className="w-full h-full flex justify-center items-start overflow-hidden p-0 m-0 max-h-[500px] sm:max-h-[750px]"
       >
-        <div className="bg-white shadow p-10 w-[794px] h-[1123px]">
-          {children}
+        <div
+          style={{
+            transform: `scale(${scale})`,
+            transformOrigin: "top",
+            width: `${794}px`,
+            height: `${1123}px`,
+          }}
+        >
+          <div className="bg-white shadow p-10 w-[794px] h-[1123px]">
+            {children}
+          </div>
         </div>
       </div>
-    </div>
-  );
-};
+    );
+  }
+);
 
 export default ResumeLayout;

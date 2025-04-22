@@ -4,6 +4,7 @@ import HomePage from "./pages/home";
 import BuilderPage from "./pages/builder";
 import ResumePreviewPage from "./pages/resumePreview";
 import { useLocalStorage } from "./hooks/useLocalStorage";
+import DashBoard from "./pages/dashboard";
 
 function App() {
   useLocalStorage();
@@ -14,7 +15,8 @@ function App() {
         <Routes>
           <Route path="/" element={<HomePage />}></Route>
           <Route path="/builder" element={<BuilderPage />}></Route>
-          <Route path="/preview" element={<ResumePreviewPage />} />
+          <Route path="/preview/:id" element={<ResumePreviewPage />} />
+          <Route path="/dashboard" element={<DashBoard />} />
         </Routes>
       </div>
     </div>

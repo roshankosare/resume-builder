@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import r2 from "@/assets/resumeclipart2.jpg";
-import { Link} from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const HomePage = () => {
   return (
@@ -23,7 +23,7 @@ const HomePage = () => {
             every section, and download your resume instantly—no design skills
             needed.
           </p>
-          <Link to={"/builder"}>
+          <Link to={"/dashboard"}>
             <Button
               size={"lg"}
               className="px-6 py-4 font-semibold bg-sky-600 hover:bg-sky-500 max-w-[200px] text-md transition-all duration-300 ease-in-out mx-auto"

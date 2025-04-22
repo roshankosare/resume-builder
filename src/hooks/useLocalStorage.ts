@@ -1,25 +1,23 @@
-import { userStore } from "@/store/user";
+import { resumeStore } from "@/store/resume";
 import { useEffect, useState } from "react";
 
 export const useLocalStorage = () => {
-  const user = userStore((state) => state.user);
-  const setUser = userStore((state) => state.setUser);
+  const resumes = resumeStore((state) => state.resumes);
+  const setResume = resumeStore((state) => state.setResume);
   const [localStorageLoaded, setLocalStorageLoaded] = useState<boolean>(false);
 
   useEffect(() => {
-    console.log(user)
-    if (localStorageLoaded) localStorage.setItem("user", JSON.stringify(user));
-  }, [user, localStorageLoaded]);
+    if (localStorageLoaded)
+      localStorage.setItem("resumes", JSON.stringify(resumes));
+  }, [resumes, localStorageLoaded]);
 
   useEffect(() => {
-    const user = localStorage.getItem("user");
+    const resumes = localStorage.getItem("resumes");
 
-    if (user) {
-      const updateUser = JSON.parse(user);
-      setUser({
-        ...updateUser,
-      });
+    if (resumes) {
+      const updateResume = JSON.parse(resumes);
+      setResume(updateResume);
     }
     setLocalStorageLoaded(true);
-  }, [setUser]);
+  }, [setResume]);
 };

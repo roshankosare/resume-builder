@@ -4,6 +4,8 @@ export type BaseFormComponentProps = {
   onNext?: () => void;
   onPrevious?: () => void;
   handleSubmit: (user: Partial<User>) => void;
+  isEdit: boolean;
+  resumeId:number;
 };
 
 export type Education = {
@@ -52,4 +54,9 @@ export type User = {
   workExperience: WorkExperience[];
   skills: Skill[];
   otherSections: OtherSection[];
+};
+
+export type Resume = {
+  id: number;
+  data: User;
 };

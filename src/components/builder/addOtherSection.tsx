@@ -3,7 +3,7 @@ import { Button } from "../ui/button";
 import { BaseFormComponentProps, OtherSection, User } from "@/types";
 import { PlusIcon, Trash2Icon } from "lucide-react";
 import OtherSectionForm, { OtherSectionFormRef } from "./otherSectionForm";
-
+import { useNavigate } from "react-router-dom";
 type AddOtherSectionProps = BaseFormComponentProps & {
   user: Pick<User, "otherSections">;
 };
@@ -14,10 +14,14 @@ const AddOtherSection: React.FC<AddOtherSectionProps> = ({
   onPrevious,
   onNext,
   user,
+  isEdit,
+  resumeId,
 }) => {
   const [otherSections, setOtherSections] = useState<OtherSection[]>(
     user.otherSections
   );
+
+  const navigate = useNavigate();
   // 2. Define a submit handler.
   const formRefs = useRef<
     Record<number, React.RefObject<OtherSectionFormRef | null>>
@@ -45,7 +49,12 @@ const AddOtherSection: React.FC<AddOtherSectionProps> = ({
     }
 
     handleSubmit({ otherSections: results });
-    if (onNext) onNext();
+    if (isEdit) {
+      navigate(`/preview/${resumeId}`);
+      return;
+    }
+    navigate(`/preview`);
+    if (onNext && !isEdit) onNext();
   };
 
   const onDelete = (id: number) => {
@@ -108,18 +117,30 @@ const AddOtherSection: React.FC<AddOtherSectionProps> = ({
         <p className="text-sm text-center">Add Other Section</p>
       </div>
       <div className="flex w-full justify-between">
-        {hasPrevious && (
+        {isEdit ? (
           <Button
-            onClick={() => onPrevious && onPrevious()}
-            type="button"
             className="px-6  bg-sky-600 hover:bg-sky-500 text-white"
+            type="submit"
+            onClick={() => onSubmit()}
           >
-            Back
+            Save
           </Button>
+        ) : (
+          hasPrevious &&
+          !isEdit && (
+            <Button
+              className="px-6  bg-sky-600 hover:bg-sky-500 text-white"
+              type="button"
+              onClick={() => onPrevious && onPrevious()}
+            >
+              Back
+            </Button>
+          )
         )}
-        {hasNext && (
+        {hasNext && !isEdit && (
           <Button
             className="px-6 bg-sky-600 hover:bg-sky-500 text-white"
+            type="submit"
             onClick={() => onSubmit()}
           >
             Next

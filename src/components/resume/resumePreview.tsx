@@ -1,17 +1,19 @@
 import { User } from "@/types";
-import React from "react";
+import React, { forwardRef } from "react";
 import ResumeLayout from "./resumeLayout";
 
 type ResumePreviewProps = {
   user: User;
+  maxWidth?: number;
 };
 
 const Separator = () => <div className="w-full h-[6px] bg-blue-800"></div>;
 
-const ResumePreview: React.FC<ResumePreviewProps> = ({ user }) => {
+const ResumePreview =  forwardRef<HTMLDivElement, ResumePreviewProps>(
+  ({ user, maxWidth }, ref) => {
   return (
-    <ResumeLayout>
-      <div className="flex flex-col w-full h-full gap-y-6">
+    <ResumeLayout maxWidth={maxWidth} ref = {ref}>
+      <div className="flex flex-col w-full h-full gap-y-4">
         <div className="flex flex-col gap-y-4">
           <div className="h-[60px] font-bold justify-center items-center text-4xl text-black text-center">
             {user.fullName}
@@ -31,7 +33,7 @@ const ResumePreview: React.FC<ResumePreviewProps> = ({ user }) => {
           </>
         )}
 
-        <div className="flex flex-col gap-y-4">
+        <div className="flex flex-col gap-y-2">
           <p className="font-bold text-xl">Education</p>
           {
             <ul className="list-disc list-inside ml-8 space-y-4">
@@ -53,10 +55,10 @@ const ResumePreview: React.FC<ResumePreviewProps> = ({ user }) => {
         <Separator />
         {user.skills.length > 0 && (
           <>
-            <div className="flex flex-col gap-y-4">
+            <div className="flex flex-col gap-y-2">
               <p className="font-bold text-xl">Skills</p>
               {
-                <ul className=" list-disc grid grid-cols-3 gap-y-2">
+                <ul className=" list-disc ml-12 grid grid-cols-3 gap-y-2">
                   {user.skills.map((skill) => (
                     <li key={skill.id} className="text-sm">
                       {skill.value}
@@ -71,13 +73,13 @@ const ResumePreview: React.FC<ResumePreviewProps> = ({ user }) => {
 
         {user.workExperience.length > 0 && (
           <>
-            <div className="flex flex-col gap-y-4">
+            <div className="flex flex-col gap-y-2">
               <p className="font-bold text-xl">Work Experience</p>
               {
-                <ul className="list-disc list-inside ml-8 space-y-4">
+                <ul className="list-disc list-inside ml-8 space-y-2">
                   {user.workExperience.map((wrk) => (
-                    <div className="flex text-sm flex-col">
-                      <li key={wrk.id}>
+                    <div className="flex text-sm flex-col" key={wrk.id}>
+                      <li>
                         <span className="font-bold text-sm">{wrk.company}</span>
                         {" | "}
                         <span>{wrk.role}</span>
@@ -101,29 +103,28 @@ const ResumePreview: React.FC<ResumePreviewProps> = ({ user }) => {
 
         {user.otherSections.length > 0 &&
           user.otherSections.map((section) => (
-            <>
-              <div className="flex flex-col gap-y-4" key={section.id}>
-                <p className="font-bold text-xl">{section.sectionTitle}</p>
-                <ul className="list-disc list-inside ml-8 space-y-4">
-                  {section.fields.map((field) => (
-                    <div className="flex text-sm flex-col">
-                      <li key={field.id}>
-                        <span className="font-bold text-sm">{field.fieldTitle}</span>
-    
-                      </li>
-                      <div className="flex text-sm ml-6 text-justify">
-                        {field.description}
-                      </div>
+            <div className="flex flex-col gap-y-2" key={section.id}>
+              <p className="font-bold text-xl">{section.sectionTitle}</p>
+              <ul className="list-disc list-inside ml-8 space-y-2">
+                {section.fields.map((field) => (
+                  <div className="flex text-sm flex-col" key={field.id}>
+                    <li>
+                      <span className="font-bold text-sm">
+                        {field.fieldTitle}
+                      </span>
+                    </li>
+                    <div className="flex text-sm ml-6 text-justify">
+                      {field.description}
                     </div>
-                  ))}
-                </ul>
-              </div>
+                  </div>
+                ))}
+              </ul>
               <Separator />
-            </>
+            </div>
           ))}
       </div>
     </ResumeLayout>
   );
-};
+});
 
 export default ResumePreview;

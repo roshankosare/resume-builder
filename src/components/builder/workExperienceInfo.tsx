@@ -8,6 +8,7 @@ import { PlusIcon, Trash2Icon } from "lucide-react";
 import WorkExperienceForm, {
   WorkExperienceFormRef,
 } from "./workExperienceForm";
+import { useNavigate } from "react-router-dom";
 
 const WorkExperienceInfo: React.FC<WorkExperienceInfoProps> = ({
   handleSubmit,
@@ -16,10 +17,13 @@ const WorkExperienceInfo: React.FC<WorkExperienceInfoProps> = ({
   onPrevious,
   onNext,
   user,
+  isEdit,
+  resumeId
 }) => {
   const [workExperience, setWorkExperience] = useState<WorkExperience[]>(
     user.workExperience
   );
+  const navigate = useNavigate();
   // 2. Define a submit handler.
   const formRefs = useRef<
     Record<number, React.RefObject<WorkExperienceFormRef | null>>
@@ -43,7 +47,10 @@ const WorkExperienceInfo: React.FC<WorkExperienceInfoProps> = ({
     }
 
     handleSubmit({ workExperience: results });
-    if (onNext) onNext();
+    if (isEdit) {
+      navigate(`/preview/${resumeId}`);
+    }
+    if (onNext && !isEdit) onNext();
   };
 
   const onDelete = (id: number) => {
@@ -61,7 +68,7 @@ const WorkExperienceInfo: React.FC<WorkExperienceInfoProps> = ({
         toDate: "",
         periodType: "year" as "year" | "month",
         value: 1,
-        description:""
+        description: "",
       },
     ]);
   };
@@ -106,18 +113,30 @@ const WorkExperienceInfo: React.FC<WorkExperienceInfoProps> = ({
         <p className="text-sm text-center">Add Work Experience</p>
       </div>
       <div className="flex w-full justify-between">
-        {hasPrevious && (
+        {isEdit ? (
           <Button
-            onClick={() => onPrevious && onPrevious()}
-            type="button"
             className="px-6  bg-sky-600 hover:bg-sky-500 text-white"
+            type="submit"
+            onClick={() => onSubmit()}
           >
-            Back
+            Save
           </Button>
+        ) : (
+          hasPrevious &&
+          !isEdit && (
+            <Button
+              className="px-6  bg-sky-600 hover:bg-sky-500 text-white"
+              type="button"
+              onClick={() => onPrevious && onPrevious()}
+            >
+              Back
+            </Button>
+          )
         )}
-        {hasNext && (
+        {hasNext && !isEdit && (
           <Button
             className="px-6 bg-sky-600 hover:bg-sky-500 text-white"
+            type="submit"
             onClick={() => onSubmit()}
           >
             Next

@@ -15,8 +15,9 @@ import { z } from "zod";
 import { personalInfoSchema } from "./schemas";
 import { BaseFormComponentProps, User } from "@/types";
 import { Textarea } from "../ui/textarea";
+import { useNavigate } from "react-router-dom";
 type PersonalInfoProps = BaseFormComponentProps & {
-  user: Pick<User, "fullName" | "address" | "email" |"about">;
+  user: Pick<User, "fullName" | "address" | "email" | "about">;
 };
 
 const PersonalInfo: React.FC<PersonalInfoProps> = ({
@@ -25,7 +26,10 @@ const PersonalInfo: React.FC<PersonalInfoProps> = ({
   hasNext,
   hasPrevious,
   onNext,
+  isEdit,
+  resumeId
 }) => {
+  const navigate = useNavigate();
   const form = useForm<z.infer<typeof personalInfoSchema>>({
     resolver: zodResolver(personalInfoSchema),
     defaultValues: {
@@ -40,7 +44,7 @@ const PersonalInfo: React.FC<PersonalInfoProps> = ({
       fullName: user.fullName,
       email: user.email,
       address: user.address,
-      about:user.about
+      about: user.about,
     });
   }, [user, form]);
 
@@ -52,9 +56,12 @@ const PersonalInfo: React.FC<PersonalInfoProps> = ({
       fullName: values.fullName,
       address: values.address,
       email: values.email,
-      about:values.about
+      about: values.about,
     });
-    if (onNext) onNext();
+    if (isEdit) {
+      navigate(`/preview/${resumeId}`);
+    }
+    if (onNext && !isEdit) onNext();
   }
   return (
     <Form {...form}>
@@ -119,15 +126,25 @@ const PersonalInfo: React.FC<PersonalInfoProps> = ({
           )}
         />
         <div className="flex w-full justify-between">
-          {hasPrevious && (
+          {isEdit ? (
             <Button
               className="px-6  bg-sky-600 hover:bg-sky-500 text-white"
-              type="button"
+              type="submit"
             >
-              Back
+              Save
             </Button>
+          ) : (
+            hasPrevious &&
+            !isEdit && (
+              <Button
+                className="px-6  bg-sky-600 hover:bg-sky-500 text-white"
+                type="button"
+              >
+                Back
+              </Button>
+            )
           )}
-          {hasNext && (
+          {hasNext && !isEdit && (
             <Button
               className="px-6 bg-sky-600 hover:bg-sky-500 text-white"
               type="submit"
