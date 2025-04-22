@@ -1,5 +1,5 @@
 import { User } from "@/types";
-import  { forwardRef } from "react";
+import { forwardRef } from "react";
 import ResumeLayout from "./resumeLayout";
 
 type ResumePreviewProps = {

@@ -38,13 +38,14 @@ const Header = () => {
 
   useEffect(() => {
     const handleResize = () => {
-      if (window.innerWidth < 400) {
+      if (window.innerWidth < 500) {
         setMobile(true);
         return;
       }
       setMobile(false);
     };
-    if (window.innerWidth < 400) {
+    console.log(window.innerWidth)
+    if (window.innerWidth < 500) {
       setMobile(true);
     }
 
@@ -54,6 +55,7 @@ const Header = () => {
   const onMenuClick = () => {
     setShowMobileNav((pre) => !pre);
   };
+  console.log(mobile)
   return (
     <div className="w-full px-2 py-2 sm:px-5 lg:px-12  sm:py-5 backdrop-blur-lg sticky z-50 top-0  flex flex-col gap-y-2 ">
       <div className="flex flex-row justify-between items-center">
@@ -97,8 +99,8 @@ const Header = () => {
       {showMobileNav && (
         <div className="w-full h-auto bg-white px-4 py-4 shadow-md rounded-lg">
           <div className="flex w-full  flex-col gap-y-4">
-            <Link to={"/"}>Home</Link>
-            <Link to={"/dashboard"}>My Resumes</Link>
+            <Link className="text-gray-700 text-sm" to={"/"}>Home</Link>
+            <Link className="text-gray-700 text-sm" to={"/dashboard"}>My Resumes</Link>
             <div className=" flex flex-row gap-x-4 ">
               {mySocialLinks.map((link) => (
                 <a className="" href={link.path} key={link.id}>

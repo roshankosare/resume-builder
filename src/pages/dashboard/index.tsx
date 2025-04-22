@@ -77,7 +77,7 @@ const DashBoard = () => {
                 </div>
               </div>
             ))}
-            <div className="w-[300px] max-h-[500px] flex flex-col justify-center items-center bg-white px-4 py-4 shadow-lg">
+            <div className="w-[300px] max-h-[500px] flex flex-col justify-center items-center bg-white px-4 py-4 shadow-lg gap-y-2">
               <button
                 className="border-none shadow-none w-[40px] h-[40px] cursor-pointer"
                 onClick={() => handleCreateNewResume()}
@@ -87,6 +87,7 @@ const DashBoard = () => {
                   strokeWidth={0.5}
                 />
               </button>
+              <p className="text-gray-700">Create New</p>
             </div>
           </div>
         ) : (
