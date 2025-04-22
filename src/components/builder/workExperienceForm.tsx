@@ -87,7 +87,7 @@ const WorkExperienceForm = forwardRef<
           )}
         />
 
-<FormField
+        <FormField
           control={form.control}
           name="description"
           render={({ field }) => (
@@ -95,9 +95,7 @@ const WorkExperienceForm = forwardRef<
               <FormLabel className="text-gray-600">Describe Job</FormLabel>
               <FormControl>
                 <Textarea
-                  placeholder="tell about the job "
-                  {...field}
-                />
+                 placeholder="tell about the job " {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>

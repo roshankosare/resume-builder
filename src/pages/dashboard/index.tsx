@@ -58,7 +58,9 @@ const DashBoard = () => {
                 key={r.id}
                 className="w-[300px] max-h-[500px] flex flex-col px-2 py-2 gap-y-4 bg-gray-100 shadow-lg"
               >
-                <ResumePreview user={r.data} maxWidth={300}  />
+                <ResumePreview user={r.data} maxWidth={300} 
+                
+                />
                 <div className="flex justify-between">
                   <Button
                     variant={"outline"}

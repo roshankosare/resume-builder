@@ -18,7 +18,7 @@ const WorkExperienceInfo: React.FC<WorkExperienceInfoProps> = ({
   onNext,
   user,
   isEdit,
-  resumeId
+  resumeId,
 }) => {
   const [workExperience, setWorkExperience] = useState<WorkExperience[]>(
     user.workExperience

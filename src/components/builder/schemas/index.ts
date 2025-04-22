@@ -28,8 +28,6 @@ export const skillsSchema = z.object({
   skill: z.string().min(1, "This cannot be empty"),
 });
 
-
-
 export const otherSectionFieldSchema = z.object({
   fieldTitle: z.string().min(1, "This cannot be empty"),
   description: z.string(),
