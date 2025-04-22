@@ -12,7 +12,7 @@ const ResumeLayout = forwardRef<HTMLDivElement, ResumePreviewPropsProps>(
     useEffect(() => {
       const maxPageWidth = 794;
       function calculateScale(mw?: number) {
-        const screenWidth = mw || Math.min(window.innerWidth - 40, 600);
+        const screenWidth =Math.min(window.innerWidth - 40, mw || 600);
         const newScale = Math.min(1, screenWidth / maxPageWidth);
         setScale(newScale);
       }
