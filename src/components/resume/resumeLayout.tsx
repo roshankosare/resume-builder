@@ -1,4 +1,4 @@
-import React, { forwardRef, ReactNode, useEffect, useState } from "react";
+import  { forwardRef, ReactNode, useEffect, useState } from "react";
 
 type ResumePreviewPropsProps = {
   children: ReactNode;
